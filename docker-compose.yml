@@ -1,0 +1,33 @@
+version: '3.7'
+services:
+  api:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    ports:
+      - "8080:8080"
+    restart: always
+    depends_on:
+      - mysqldb
+    environment:
+      RDS_HOSTNAME: mysqldb
+      RDS_PORT: 3306
+      RDS_DB_NAME: practice
+      RDS_USERNAME: dummy
+      RDS_PASSWORD: dummypassword
+
+  mysqldb:
+    image: mysql:5.7
+    ports:
+      - "3306:3306"
+    restart: always
+    environment:
+      MYSQL_ROOT_PASSWORD: dummypassword
+      MYSQL_USER: dummy
+      MYSQL_PASSWORD: dummypassword
+      MYSQL_DATABASE: practice
+    volumes:
+      - mysql-database-data-volume:/var/lib/mysql
+
+volumes:
+  mysql-database-data-volume:
